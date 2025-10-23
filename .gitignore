@@ -1,1 +1,29 @@
+# ============================================================
+# Rime: Ignore all runtime-generated and cache files
+# ============================================================
+
+/trash/
+
+# 動態使用者資料庫（LevelDB）
+*.userdb/
+*.ldb
+*.log
+*.LOG
+*.LOCK
+MANIFEST-*
+
+# 自動生成的表格與索引
+/build/
+*.table.bin
+*.reverse.bin
+
+# Rime 使用者配置暫存
+user.yaml
+installation.yaml
+squirrel.custom.yaml
+
+# 臨時檔、備份檔
+*.bak
+*.tmp
+*.swp
 .DS_Store
