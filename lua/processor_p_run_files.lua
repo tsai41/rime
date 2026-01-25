@@ -1,11 +1,14 @@
 --- @@ p_run_files
 --[[
+（bopomo_onionplus_2）
 快捷鍵開啟檔案/程式/網站
 --]]
 
 ----------------------------------------------------------------------------------------
-local generic_open = require("p_components/p_generic_open")
-local run_pattern = require("p_components/p_run_pattern")
+local oscmd = require("p_components/p_oscmd")
+local run_open = require("p_components/p_run_open")
+-- local generic_open = require("p_components/p_generic_open")
+-- local run_pattern = require("p_components/p_run_pattern")
 ----------------------------------------------------------------------------------------
 
 -- local function generic_open(dest)
@@ -31,6 +34,7 @@ local function init(env)
   env.custom_phrase = path .. "/" .. env.textdict .. ".txt" or ""
   env.run_pattern = path .. "/lua/p_components/p_run_pattern.lua" or ""
   -- log.info("lua_custom_phrase: \'" .. env.textdict .. ".txt\' Initilized!")  -- 日誌中提示已經載入 txt 短語
+  env.oscmd = oscmd
 end
 
 
@@ -42,7 +46,9 @@ local function processor(key, env)
   local caret_pos = context.caret_pos
   local comp = context.composition
   local seg = comp:back()
+  -- local g_c_t = context:get_commit_text()
   local o_ascii_mode = context:get_option("ascii_mode")
+  local key_repr = key:repr()
 
   -- if env.textdict == "" or env.prefix == "" then
   if env.prefix == "" then
@@ -60,37 +66,16 @@ local function processor(key, env)
 -----------------------------------------------------------------------------
 
   --- pass not space Return KP_Enter key_num
-  elseif key:repr() ~= "space" and key:repr() ~= "Return" and key:repr() ~= "KP_Enter" then
+  elseif key_repr ~= "space" and key_repr ~= "Return" and key_repr ~= "KP_Enter" then
     return 2
 
 -----------------------------------------------------------------------------
 
   elseif seg:has_tag("mf_translator") then  -- 開頭
-    local op_code = #c_input == caret_pos and string.match(c_input, "^" .. env.prefix .. "j([a-z]+)$")
-    local run_in = run_pattern[ op_code ] -- 此處不能「.open」，如 op_code 不符合會報錯！
-    if op_code then
-      if op_code == "t" then
-        -- engine:commit_text( "TEST！！！" )  -- 測試用
-        generic_open(env.run_pattern)
-        context:clear()
-        return 1
-      elseif run_in ~= nil then
-        -- engine:commit_text(run_in)  -- 測試用
-        generic_open(run_in.open)  -- 要確定 run_in 不為 nil，才能加.open
-        context:clear()
-        return 1
-      elseif env.textdict == "" then
-        return 2
-      elseif op_code == "c" then
-        -- io.popen("env.custom_phrase")  -- 無效！
-        generic_open(env.custom_phrase)
-        context:clear()
-        return 1
-      else  -- 沒有該碼，空白鍵清空
-        -- context:confirm_current_selection()
-        context:clear()
-        return 1
-      end
+    local op_code_check = not string.match(c_input, env.prefix .. "['/;]") and string.match(c_input, env.prefix .. "j[a-z]+$")
+    local op_code = string.match(c_input, "^" .. env.prefix .. "j([a-z]+)$")
+    if op_code_check then
+      return run_open(context, c_input, caret_pos, op_code, env.run_pattern, env.textdict, env.custom_phrase, env.oscmd)
     end
   end
 

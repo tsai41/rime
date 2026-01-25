@@ -74,7 +74,14 @@ end
 
 local function circled5_number(t)
   if t == "" then return "" end
-  local format1 = "xlit|0123456789|Ⓞ㊀㊁㊂㊃㊄㊅㊆㊇㊈|"
+  local format1 = "xlit|0123456789|Ⓞ㊀㊁㊂㊃㊄㊅㊆㊇㊈|"  --小寫「o」：ⓞ
+  local proj = convert_format(format1)
+  return proj:apply(t)
+end
+
+local function paren_number(t)
+  if t == "" then return "" end
+  local format1 = "xlit|0123456789|⒪㈠㈡㈢㈣㈤㈥㈦㈧㈨|"  --大寫「o」：🄞
   local proj = convert_format(format1)
   return proj:apply(t)
 end
@@ -82,6 +89,13 @@ end
 local function purech_number(t)
   if t == "" then return "" end
   local format1 = "xlit|0123456789.|〇一二三四五六七八九點|"
+  local proj = convert_format(format1)
+  return proj:apply(t)
+end
+
+local function purebigch_number(t)
+  if t == "" then return "" end
+  local format1 = "xlit|0123456789.|零壹貳參肆伍陸柒捌玖點|"
   local proj = convert_format(format1)
   return proj:apply(t)
 end
@@ -95,14 +109,56 @@ end
 
 local function little1_number(t)
   if t == "" then return "" end
-  local format1 = "xlit|0123456789|⁰¹²³⁴⁵⁶⁷⁸⁹|"
+  local format1 = "xlit|0123456789.|⁰¹²³⁴⁵⁶⁷⁸⁹⋅|"
   local proj = convert_format(format1)
   return proj:apply(t)
 end
 
 local function little2_number(t)
   if t == "" then return "" end
-  local format1 = "xlit|0123456789|₀₁₂₃₄₅₆₇₈₉|"
+  local format1 = "xlit|0123456789.|₀₁₂₃₄₅₆₇₈₉.|"
+  local proj = convert_format(format1)
+  return proj:apply(t)
+end
+
+local function mss_number(t)
+  if t == "" then return "" end
+  local format1 = "xlit|0123456789.|𝟢𝟣𝟤𝟥𝟦𝟧𝟨𝟩𝟪𝟫.|"
+  local proj = convert_format(format1)
+  return proj:apply(t)
+end
+
+local function mssb_number(t)
+  if t == "" then return "" end
+  local format1 = "xlit|0123456789.|𝟬𝟭𝟮𝟯𝟰𝟱𝟲𝟳𝟴𝟵.|"
+  local proj = convert_format(format1)
+  return proj:apply(t)
+end
+
+local function mm_number(t)
+  if t == "" then return "" end
+  local format1 = "xlit|0123456789.|𝟶𝟷𝟸𝟹𝟺𝟻𝟼𝟽𝟾𝟿.|"
+  local proj = convert_format(format1)
+  return proj:apply(t)
+end
+
+local function arabic_indic_number(t)
+  if t == "" then return "" end
+  local format1 = "xlit|0123456789.|٠١٢٣٤٥٦٧٨٩٫|"
+  local proj = convert_format(format1)
+  return proj:apply(t)
+end
+
+local function extended_arabic_indic_number(t)
+  if t == "" then return "" end
+  local format1 = "xlit|0123456789.|۰۱۲۳۴۵۶۷۸۹٫|"
+  local proj = convert_format(format1)
+  return proj:apply(t)
+end
+
+local function devanagari_number(t)
+  if t == "" then return "" end
+  local format1 = "xlit|0123456789|०१२३४५६७८९|"
   local proj = convert_format(format1)
   return proj:apply(t)
 end
@@ -135,6 +191,23 @@ local function keycap_number(dn)
   dn = string.gsub(dn, "7", "7️⃣")
   dn = string.gsub(dn, "8", "8️⃣")
   dn = string.gsub(dn, "9", "9️⃣")
+  return dn
+end
+
+------------------------------------
+
+local function keycap_ns_number(dn)
+  if dn == "" then return "" end
+  dn = string.gsub(dn, "0", "0⃣")
+  dn = string.gsub(dn, "1", "1⃣")
+  dn = string.gsub(dn, "2", "2⃣")
+  dn = string.gsub(dn, "3", "3⃣")
+  dn = string.gsub(dn, "4", "4⃣")
+  dn = string.gsub(dn, "5", "5⃣")
+  dn = string.gsub(dn, "6", "6⃣")
+  dn = string.gsub(dn, "7", "7⃣")
+  dn = string.gsub(dn, "8", "8⃣")
+  dn = string.gsub(dn, "9", "9⃣")
   return dn
 end
 
@@ -334,11 +407,20 @@ return {
         circled3_number = circled3_number,
         circled4_number = circled4_number,
         circled5_number = circled5_number,
+        paren_number = paren_number,
         purech_number = purech_number,
+        purebigch_number = purebigch_number,
         military_number = military_number,
         little1_number = little1_number,
         little2_number = little2_number,
         braille_c_number = braille_c_number,
         braille_u_number = braille_u_number,
         keycap_number = keycap_number,
+        keycap_ns_number = keycap_ns_number,
+        mss_number = mss_number,
+        mssb_number = mssb_number,
+        mm_number = mm_number,
+        arabic_indic_number = arabic_indic_number,
+        extended_arabic_indic_number = extended_arabic_indic_number,
+        devanagari_number = devanagari_number,
         }

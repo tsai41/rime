@@ -34,14 +34,14 @@ local function translate(input, seg)
     -- if www_in or url1_in or url2_in or url3_in or url4_in then
     -- if www_url_in then
     -- if url_in then
-      yield(Candidate("internet", seg.start, seg._end, input , "〔URL〕"))
+      yield(Candidate("simp_email_url", seg.start, seg._end, input , "〔URL〕"))
       -- yield(url_cand)
       -- return
     -- end
     else
     -- elseif string.match(input, "^[a-z][-_.0-9a-z]*@.*$") then
     -- elseif email_in then
-      yield(Candidate("internet", seg.start, seg._end, input , "〔e-mail〕"))
+      yield(Candidate("simp_email_url", seg.start, seg._end, input , "〔e-mail〕"))
       -- yield(email_cand)
       -- return
     end

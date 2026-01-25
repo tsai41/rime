@@ -1,0 +1,35 @@
+# Rime user dictionary
+#@/db_name	jpnin1
+#@/db_type	userdb
+#@/rime_version	1.7.3
+#@/tick	27
+#@/user_id	95a57510-d07b-4798-b355-ccb1d7740e03
+a, no, 	あの	c=0 d=0.0937067 t=25
+a, no, n, 	あのん	c=1 d=0.941765 t=25
+ba. ra. 	バラ	c=2 d=1.85086 t=25
+de, 	で	c=1 d=0.97531 t=25
+do, shi, 	どし	c=0 d=0.0913931 t=25
+do, shi, yo, ka, 	どしよか	c=1 d=0.918512 t=25
+e. mo. i, 	エモい	c=1 d=0.913931 t=25
+go. mi. 	ゴミ	c=1 d=1 t=27
+ha, 	は	c=1 d=0.932394 t=25
+hika; ru, 	光る	c=0 d=0.0941765 t=25
+hika; ru, na, ra, 	光るなら	c=1 d=0.946485 t=25
+i, se, 	いせ	c=0 d=0.0985112 t=25
+jo; 	所	c=1 d=1 t=25
+ko, no, 	この	c=2 d=1.96531 t=25
+ma, da, 	まだ	c=1 d=0.937067 t=25
+ma, i, go, 	まいご	c=1 d=0.909373 t=25
+n, 	ん	c=0 d=0.0937067 t=25
+na, ra, 	なら	c=0 d=0.0941765 t=25
+ni. me. 	ニメ	c=0 d=0.0985112 t=25
+ni. me. i, se, 	ニメいせ	c=1 d=0.99005 t=25
+o, ha, yo, 	おはよ	c=4 d=3.79414 t=25
+o, mo, ro, 	おもろ	c=2 d=1.99501 t=25
+o; 	御	c=1 d=0.951229 t=25
+pi, e, n, 	ぴえん	c=1 d=1 t=26
+re. 	レ	c=1 d=0.99005 t=25
+ringo; 	林檎	c=1 d=0.965605 t=25
+ru, 	る	c=1 d=0.995012 t=25
+sakura; 	桜	c=1 d=0.970446 t=25
+yo, ka, 	よか	c=0 d=0.0913931 t=25

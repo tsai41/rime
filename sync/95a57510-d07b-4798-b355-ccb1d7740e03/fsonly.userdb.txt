@@ -1,0 +1,14 @@
+# Rime user dictionary
+#@/db_name	fsonly.userdb
+#@/db_type	userdb
+#@/rime_version	1.5.3
+#@/tick	3
+#@/user_id	95a57510-d07b-4798-b355-ccb1d7740e03
+0 4 0 	０４０	c=1 d=0.99005 t=3
+4 	４	c=0 d=0.0995012 t=3
+e 	ｅ	c=0 d=0.099005 t=3
+h d 	ｈｄ	c=0 d=0.099005 t=3
+h d e 	ｈｄｅ	c=1 d=0.995012 t=3
+j c 	ｊｃ	c=0 d=0.0995012 t=3
+j c j o 4 	ｊｃｊｏ４	c=1 d=1 t=3
+j o 	ｊｏ	c=0 d=0.0995012 t=3

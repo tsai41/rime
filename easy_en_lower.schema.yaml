@@ -4,7 +4,7 @@
 schema:
   schema_id: easy_en_lower
   name: Easy English（英漢字典）-Lower
-  version: "202305"
+  version: "202411"
   author:
     - 洋蔥
   description:
@@ -68,6 +68,7 @@ speller:
   delimiter: " "
   algebra:
     - derive/^\|$/ /
+    - derive/@/\|/
     - derive|@|\.\/|
     - xform|@| |
 
@@ -79,11 +80,11 @@ speller:
 
 translator:
   dictionary: easy_en_lower
-  enable_encoder: false
-  encode_commit_history: false
-  enable_completion: true
-  sentence_over_completion: false
+  # enable_encoder: false
+  # encode_commit_history: false
   enable_sentence: false
+  enable_completion: true
+  # sentence_over_completion: false
   enable_user_dict: false
   # strict_spelling: false
   # spelling_hints: 2
@@ -95,11 +96,11 @@ translator:
 easy_en_upper:
   tag: easy_en_upper  #不「tag」可直接附加在「abc」上
   dictionary: easy_en_upper
-  enable_encoder: false
-  encode_commit_history: false
-  enable_completion: false
-  sentence_over_completion: false
+  # enable_encoder: false
+  # encode_commit_history: false
   enable_sentence: false
+  enable_completion: false
+  # sentence_over_completion: false
   enable_user_dict: false
 
 e_reverse_lookup:

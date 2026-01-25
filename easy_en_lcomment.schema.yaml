@@ -4,7 +4,7 @@
 schema:
   schema_id: easy_en_lcomment
   name: "提示碼_英翻中"
-  version: "202301"
+  version: "202405"
   author:
     - Onion
   description: |
@@ -50,11 +50,11 @@ speller:
 translator:
   dictionary: easy_en_lcomment
   prism: easy_en_lcomment
-  sentence_over_completion: false
+  # enable_encoder: false
+  # encode_commit_history: false
   enable_sentence: false
-  enable_encoder: false
-  encode_commit_history: false
   enable_completion: false
+  # sentence_over_completion: false
   enable_user_dict: false
 
 punctuator:

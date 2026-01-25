@@ -1,0 +1,7 @@
+# Rime user dictionary
+#@/db_name	cangjie5.userdb
+#@/db_type	userdb
+#@/rime_version	1.5.3
+#@/tick	1
+#@/user_id	95a57510-d07b-4798-b355-ccb1d7740e03
+d ku 	木大山	c=1 d=1 t=1

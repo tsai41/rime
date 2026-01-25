@@ -35,7 +35,7 @@
 --      - lua_filter@myfilter                        --（關）把 charset_comment_filter 和 reverse_lookup_filter 註釋串在一起，如：CJK(hǎo)
 --
 --      - lua_filter@charset_filter2                 --（引lua資料夾）（ocm_onionmix）（手機全方案會用到） 遮屏選含「᰼᰼」候選項
---      - lua_filter@comment_filter_plus             --（引lua資料夾）（Mount_ocm） 遮屏提示碼，開關（simplify_comment）（遇到「'/」不遮屏）。
+--      - lua_filter@comment_filter_plus             --（引lua資料夾）（Mount_ocm、onion-array10） 遮屏提示碼，開關（simplify_comment）（遇到「'/」不遮屏）。
 --      - lua_filter@symbols_mark_filter             --（關，但 mix_cf2_cfp_smf_filter 有用到某元件，部分開啟） 候選項註釋符號、音標等屬性之提示碼(comment)（用 opencc 可實現，但無法合併其他提示碼(comment)，改用 Lua 來實現）
 --      - lua_filter@missing_mark_filter             --（關） 補上標點符號因直上和 opencc 衝突沒附註之選項
 --      - lua_filter@array30_comment_filter          --（關） 遮屏提示碼，開關（simplify_comment）（遇到「`」不遮屏）
@@ -48,16 +48,22 @@
 --      - lua_filter@convert_japan_filter            --（引lua資料夾）日文出羅馬字、全形羅馬字、半形片假名、全片假名、全平假名。後來合併修改為掛接方案也可使用。
 --      - lua_filter@p_convert_japan_filter          --（關）同 convert_japan_filter，掛接方案用。
 --      - lua_filter@halfwidth_katakana_filter       --（關）（jpnin1）片假名後附加半形片假名。選單顯示太雜亂，故不用。
---      - lua_filter@lua_custom_phrase_filter        --（關）取代原先 table_translator@custom_phrase。接續掛接方案後，有 bug，上不了屏，改用 translator 實現。
---      - lua_filter@preedit_model_filter            --（引lua資料夾）（bo_mixin 全系列）切換 preedit 樣式
+--      - lua_filter@lua_custom_phrase_filter        --（關）取代原先 table_translator@custom_phrase。接續掛接方案後，有 bug，上不了屏，改用 translator 實現。202512重新整理無發現？！
+--      - lua_filter@preedit_model_filter            --（關）（bo_mixin 全系列）切換 preedit 樣式。
+--      - lua_filter@punct_preedit_revise_filter     --（引lua資料夾）（bopomo_onion_double 和 onion-array30 和 onion-array10）punct 下，附加 preedit 後面 prompt 缺漏之標示。另修正 ascii_punct 下，分號(;)和冒號(:)無法變半形問題。
+--      - lua_filter@back_mark_filter                --（引lua資料夾）（dif、1bopomo_onion_double、bopomo_onionplus 和 bo_mixin 全系列）不直接用 opencc 去 comment，改 lua 間接 comment，防「兩個字符」以上無法標注，和一個字串被多個標注。
+--      - lua_filter@comment_filter_unicode          --（關）註釋 Unicode 編碼。
+--      - lua_filter@comment_filter_debug            --（關）註釋 debug 訊息。
 --
 --      - ＊合併兩個以上函數：
 --      - lua_filter@mix30_nil_comment_filter        --（關） 合併 array30_nil_filter 和 array30_comment_filter，兩個 lua filter 太耗效能。
---      - lua_filter@mix30_nil_comment_up_filter     --（引lua資料夾）（onion-array30） 合併 array30_nil_filter 和 array30_comment_filter 和 array30_spaceup_filter，三個 lua filter 太耗效能。
+--      - lua_filter@mix30_nil_comment_up_filter     --（關）（onion-array30） 合併 array30_nil_filter 和 array30_comment_filter 和 array30_spaceup_filter，三個 lua filter 太耗效能。
+--      - lua_filter@mix30_nil_comment_new_filter    --（引lua資料夾）（onion-array30） 合併 array30_nil_filter 和 array30_comment_filter，兩個 lua filter 太耗效能。
 --      - lua_filter@mix_cf2_miss_filter             --（引lua資料夾）（bopomo_onionplus 和 bo_mixin 全系列） 合併 charset_filter2 和 missing_mark_filter，兩個 lua filter 太耗效能。
 --      - lua_filter@mix_cf2_cfp_filter              --（引lua資料夾）（dif1） 合併 charset_filter2 和 comment_filter_plus，兩個 lua filter 太耗效能。
 --      - lua_filter@mix_cf2_cfp_smf_filter          --（關）（ocm_mixin） 合併 charset_filter2 和 comment_filter_plus 和 symbols_mark_filter，三個 lua filter 太耗效能。
 --      - lua_filter@ocm_mixin_filter                --（引lua資料夾）（ocm_mixin）同上條目，comment 附加改用 opencc 方式。
+--      - lua_filter@comment_filter_unicode_debug    --（引lua資料夾）（注音plus、注音mixin、ocm全系列）合併 comment_filter_unicode 和 comment_filter_debug，註釋 Unicode 編碼 和 debug 訊息。
 --
 --
 --      《 ＊ 以下「處理」注意在 processors 中的順序，基本放在最前面 》
@@ -79,14 +85,23 @@
 --      - lua_processor@kr_2set_0m                   --（關）（hangeul2set_zeromenu）韓語成零選項。開關（space_mode）
 --      - lua_processor@zhuyin_space                 --（引lua資料夾）（Mount_ocm）補注音反查無法使用空白鍵和選字後跳掉之 bug。
 --      - lua_processor@lua_tran_kp                  --（關）（bopomo_onion_double）使 lua 之 mf_translator 數字和計算機功能可用小鍵盤輸入。
+--      - lua_processor@key_binder                   --（引lua資料夾）（onion-array10）切換兩個 key_binder，尚有問題，暫無掛載。
 --
 --      - ＊合併兩個以上函數：
---      - lua_processor@array30up_mix                --（引lua資料夾）（onion-array30） 合併 array30up 和 array30up_zy，增進效能。
+--      - lua_processor@array30up_mix                --（關）（onion-array30） 合併 array30up 和 array30up_zy，增進效能。
+--      - lua_processor@array30new_mix               --（引lua資料夾）（onion-array30） 合併 array30up 和 array30up_zy，增進效能。
+--      - lua_processor@array10_mix                  --（引lua資料夾）（onion-array10） 以掛接注音修改為基礎增修。
+--      - lua_processor@array10_and_bpmf_mix         --（引lua資料夾）（onion-array10_and_bpmf_mix） 主要為array10 數字和英文相互轉換。
 --      - lua_processor@mix_apc_s2rm_ltk             --（引lua資料夾）（bo_mixin 1、2、4；bopomo_onionplus） 合併 ascii_punct_change、s2r_most、lua_tran_kp，增進效能。
 --      - lua_processor@mix_apc_s2rm_ltk_3           --（引lua資料夾）（bo_mixin3） 合併 ascii_punct_change、s2r_mixin3、lua_tran_kp，增進效能。
 --      - lua_processor@mix_apc_ltk_pluss            --（引lua資料夾）（bopomo_onionplus_space） 以原 ascii_punct_change 增加功能，使初始空白可以直接上屏。
 --      - lua_processor@mix_zhs_ltk                  --（引lua資料夾）（ocm_mixin、dif1、ocm_mix） 合併 zhuyin_space 和 lua_tran_kp。
 --      - lua_processor@mix_kp_return                --（引lua資料夾）（bopomo_onion_double） 合併 lua_tran_kp 並增加 return 上屏模式切換。
+--
+--      《 ＊ 以下「處理」注意在 segmentors 中的順序，基本放在 matcher 後面一位 》
+--      - lua_segmentor@mount_reverse2_allbpm        --（引lua資料夾）（ocm_mixin、dif1、ocm_mix） 避免注音方案 reverse2_lookup 和注音文 all_bpm 掛接在 26/30 鍵等方案時，發生跳回主方案(abc)和無法記憶等 bug。
+--      - lua_segmentor@mount_reverse2               --（引lua資料夾）（onion-array30，關閉：onion-array10、Mount_ocm、Mount_ocm_encoder） 單獨針對注音反查 reverse2_lookup。避免掛接方案發生跳回主方案(abc)和無法記憶等 bug。
+--      - lua_segmentor@mount_allbpm                 --（引lua資料夾）（bopomo_onionplus 和 bo_mixin 全系列） 單獨針對注音文 all_bpm。避免掛接方案發生跳回主方案(abc)和無法記憶等 bug。
 --      ...
 
 
@@ -142,9 +157,16 @@ charset_comment_filter = charset_cjk.charset_comment_filter
 charset_cjk_filter_plus = charset_cjk.charset_cjk_filter_plus
 
 
---- comment_filter_plus （Mount_ocm）
+--- comment_filter_plus （Mount_ocm、onion-array10）
 -- 去除後面編碼註釋
 comment_filter_plus = require("filter_comment_filter_plus")
+
+
+--- comment_filter_unicode_debug （注音plus、注音mixin、ocm全系列）
+-- 註釋 Unicode 編碼 和 debug 訊息
+comment_filter_unicode = require("filter_comment_filter_unicode")
+-- comment_filter_debug = require("filter_comment_filter_debug")
+-- comment_filter_unicode_debug = require("filter_comment_filter_unicode_debug")
 
 
 --- array30_nil_filter （onion-array30）
@@ -160,12 +182,27 @@ mix_cf2_miss_filter = require("filter_mix_cf2_miss_filter")
 --- mix_cf2_cfp_filter （dif1）
 -- 合併 charset_filter2 和 comment_filter_plus，兩個 lua filter 太耗效能。
 mix_cf2_cfp_filter = require("filter_mix_cf2_cfp_filter")
-mix30_nil_comment_up_filter = require("filter_mix30_nil_comment_up_filter")
+
+
+-- --- mix30_nil_comment_up_filter （array30）
+-- -- 合併 array30_nil_filter 和 array30_comment_filter 和 array30_spaceup_filter，三個 lua filter
+-- mix30_nil_comment_up_filter = require("array30_straight_up.filter_mix30_nil_comment_up_filter")
+
+--- mix30_nil_comment_new_filter （array30）
+-- 合併 array30_nil_filter 和 array30_comment_filter 兩個 lua filter
+mix30_nil_comment_new_filter = require("filter_mix30_nil_comment_new_filter")
 
 
 --- preedit_model_filter （bo_mixin 全系列）
 -- 切換 preedit 樣式
-preedit_model_filter = require("filter_preedit_model_filter")
+-- preedit_model_filter = require("filter_preedit_model_filter")
+-- preedit_model_charset_filter2_filter = require("filter_preedit_model_charset_filter2_filter")
+
+
+--- punct_preedit_revise_filter （bopomo_onion_double 和 onion-array30 和 onion-array10）
+-- punct 下，附加 preedit 後面 prompt 缺漏之標示。
+-- 另修正 ascii_punct 下，分號(;)和冒號(:)無法變半形問題。
+punct_preedit_revise_filter = require("filter_punct_preedit_revise_filter")
 
 
 --- en_sort_filter （easy_en_super）
@@ -202,6 +239,11 @@ ocm_mixin_filter = require("filter_ocm_mixin")
 charset_filter2 = require("filter_charset_filter2")
 
 
+--- back_mark_filter （dif、1bopomo_onion_double、bopomo_onionplus 和 bo_mixin 全系列）
+-- 不直接用 opencc 去 comment，改 lua 間接 comment，防「兩個字符」以上無法標注，和一個字串被多個標注。
+back_mark_filter = require("filter_back_mark_filter")
+
+
 --- 日文出羅馬字、全形羅馬字、半形片假名、全片假名、全平假名。
 -- convert_japan_filter：主方案用。後來合併修改為掛接方案也可使用。
 -- p_convert_japan_filter：掛接方案用，方案名稱：「japan」。
@@ -234,7 +276,8 @@ convert_english_filter = require("filter_convert_english_filter")
 -- --- lua_custom_phrase_filter
 -- -- 取代原先 table_translator@custom_phrase。
 -- -- 可多行，用\n\r。
--- -- 接續掛接方案後，有 bug，上不了屏，改用 translator 實現。
+-- -- 接續掛接方案後，有 bug，上不了屏，改用 translator 實現。202512重新整理無發現？！
+-- -- 形碼方案時，無簡單方式（如：利用詞頻），讓單字在前，短語在後，故使用 translator 實現。注音和雙拼方案可引用，測試中。
 -- lua_custom_phrase_filter = require("filter_lua_custom_phrase_filter")
 
 
@@ -253,11 +296,32 @@ convert_english_filter = require("filter_convert_english_filter")
 ascii_punct_change = require("processor_ascii_punct_change")
 
 
---- array30up_mix （onion-array30）
--- 合併 array30up 和 array30up_zy
--- 行列30三四碼字按空格直接上屏
+-- --- array30up_mix （onion-array30）
+-- -- 合併 array30up 和 array30up_zy
+-- -- 行列30三四碼字按空格直接上屏
+-- -- 行列30注音反查 Return 和 space 上屏修正
+-- array30up_mix = require("array30_straight_up.processor_array30up_mix")
+
+--- array30up_new （onion-array30）
+-- 合併 array30up_zy 等
 -- 行列30注音反查 Return 和 space 上屏修正
-array30up_mix = require("processor_array30up_mix")
+array30new_mix = require("processor_array30new_mix")
+
+
+--- array10_mix （onion-array10）
+-- 各種細節操控
+-- 行列30注音反查 Return 和 space 上屏修正
+array10_mix = require("processor_array10_mix")
+
+
+--- array10_and_bpmf_mix （onion-array10_and_bpmf）
+-- 主要為array10 數字和英文相互轉換。
+array10_and_bpmf_mix = require("processor_array10_and_bpmf_mix")
+
+
+--- key_binder （onion-array10）
+-- 切換兩個 key_binder，尚有問題，暫無掛載。
+key_binder = require("key_binder")
 
 
 --- mix_apc_s2rm_ltk （bo_mixin 1、2、4；bopomo_onionplus）
@@ -373,6 +437,30 @@ lua_custom_phrase = require("translator_lua_custom_phrase")
 -- local c_j_translator = require("translator_convert_japan_translator")
 -- convert_japan_translator = c_j_translator.convert_japan_translator
 -- p_convert_japan_translator = c_j_translator.p_convert_japan_translator
+
+
+
+
+--[[
+--------------------------------------------
+！！！！以下為 segmentor 掛接！！！！
+--------------------------------------------
+--]]
+
+
+--- mount_reverse2_allbpm （ocm_mixin、dif1、ocm_mix）
+-- 避免注音方案 reverse2_lookup 和注音文 all_bpm 掛接在 26/30 鍵等方案時，發生跳回主方案(abc)和無法記憶等 bug。
+mount_reverse2_allbpm = require("segmentor_mount_reverse2_allbpm")
+
+
+--- mount_reverse2 （onion-array30，關閉：onion-array10、Mount_ocm、Mount_ocm_encoder）
+-- 單獨針對注音反查 reverse2_lookup。避免掛接方案發生跳回主方案(abc)和無法記憶等 bug。
+mount_reverse2 = require("segmentor_mount_reverse2")
+
+
+--- mount_allbpm （bopomo_onionplus 和 bo_mixin 全系列）
+-- 單獨針對注音文 all_bpm。避免掛接方案發生跳回主方案(abc)和無法記憶等 bug。
+mount_allbpm = require("segmentor_mount_allbpm")
 
 
 

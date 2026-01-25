@@ -168,10 +168,10 @@ local function filter(inp, env)
       -- if (string.gmatch(cand.text, "^[\x30a1-\x30f3]+$")) then
       -- if (exists(is_katakana, cand.text)) then
       -- if (string.match(cand.text, "^[。、・ヲァィゥェォャュョッーアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワン゛゜]+$")) then
-    local kana = Candidate("halfwidth_katakana", start, _end, halfwidth_katakana(cand.text), "〔ｶﾀｶﾅ〕")
-      -- local kana = Candidate("halfwidth_katakana", 0, string.len(c_input), halfwidth_katakana(cand.text), " ｶﾀｶﾅ")
-      -- local kana = Candidate("halfwidth_katakana", context:get_preedit().sel_start, context:get_preedit().sel_end, halfwidth_katakana(cand.text), " ﹙ｶﾀｶﾅ﹚")
-        -- local kana = Candidate("halfwidth_katakana", 0, 3, halfwidth_katakana(cand.text), " ｶﾀｶﾅ")
+    local kana = Candidate("simp_halfwidth_katakana", start, _end, halfwidth_katakana(cand.text), "〔ｶﾀｶﾅ〕")
+      -- local kana = Candidate("simp_halfwidth_katakana", 0, string.len(c_input), halfwidth_katakana(cand.text), " ｶﾀｶﾅ")
+      -- local kana = Candidate("simp_halfwidth_katakana", context:get_preedit().sel_start, context:get_preedit().sel_end, halfwidth_katakana(cand.text), " ﹙ｶﾀｶﾅ﹚")
+        -- local kana = Candidate("simp_halfwidth_katakana", 0, 3, halfwidth_katakana(cand.text), " ｶﾀｶﾅ")
       -- yield(kana)
         -- yield(cand)
         -- break
@@ -188,7 +188,7 @@ local function filter(inp, env)
 
     -- if (string.match(cand.text, k_pattern )) then
     -- if (string.match(cand.text, k_pattern )) then
-    --   -- local kana = Candidate("halfwidth_katakana", context:get_preedit().sel_start, context:get_preedit().sel_end, halfwidth_katakana(cand.text), " ﹙ｶﾀｶﾅ﹚")
+    --   -- local kana = Candidate("simp_halfwidth_katakana", context:get_preedit().sel_start, context:get_preedit().sel_end, halfwidth_katakana(cand.text), " ﹙ｶﾀｶﾅ﹚")
     --   yield(cand)
     --   yield(kana)
     -- else

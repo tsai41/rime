@@ -64,7 +64,7 @@ local function init(env)
       , { "【 d 假名】【 n 假名】【 h 假名】【 b 假名】【 p 假名】", "𝟓𝟕" }
       , { "【 m 假名】【 y 假名】【 r 假名】【 w 假名】", "𝟓𝟖" }
       , { "｢圈｣｢框｣｢括｣數字字母：【 0 ~ 10 】【 1-0 ~ 5-0 】【 a ~ z 】", "𝟓𝟗" }
-      -- , { "═══  結束  ═══  ", "𝟔𝟎" }
+      , { "═══  結束  ═══  ", "𝟔𝟎" }
       -- -- , { "===========  結束  ===========    ", "𝟔𝟎" }
       -- , { "", "𝟔𝟏" }
       -- , { "", "𝟔𝟐" }
@@ -83,29 +83,39 @@ local function init(env)
       , { "   〖 4 〗生氣 〖 5 〗驚訝 〖 6 〗無奈", "𝟚" }
       , { "   〖 7 〗喜     〖 8 〗樂     〖 9 〗怒", "𝟛" }
       , { "   〖 0 〗指示和圖示          〖 - 〗回話", "𝟜" }
-      -- , { "    ═══  結束  ═══  ", "𝟝" }
+      , { "    ═══  結束  ═══  ", "𝟝" }
       -- -- , { "    ===========  結束  ===========    ", "𝟝" }
-      -- , { "", "𝟞" }
-      -- , { "", "𝟟" }
-      -- , { "", "𝟠" }
-      -- , { "", "𝟡" }
+      , { "", "𝟞" }
+      , { "", "𝟟" }
+      , { "", "𝟠" }
+      , { "", "𝟡" }
       -- , { "", "𝟙𝟘" }
   }
 end
 
 -- local function instruction_grave_bpmf(input, seg)
 local function translate(input, seg, env)
+  local engine = env.engine
+  local context = engine.context
+  local c_input = context.input  -- c_input 為全部輸入碼，上方 input 不含前面已確定但未上屏之選項編碼。
+
+  -- local tag_mf = seg:has_tag("instruction_grave_bpmf")  --有bug！
+  -- if not tag_mf then return end
+
   -- local check_grave = string.match(input, "^`$")
   -- local check_grave2 = string.match(input, "^``$")
 
+  -- local no_check_grave = string.match(c_input, "=``?$")  -- 會先執行該符號？故不用？
+  local no_check_grave = string.match(c_input, "```$")
+
   -- if input:find("^`$") then
   -- if check_grave then
-  if input == "`" then
+  if input == "`" and not no_check_grave then
     -- for cand in input:iter() do
     --   yield(cand)
     -- end
     for k, v in ipairs(env.table_gb_1) do
-      local cand = Candidate("help", seg.start, seg._end, v[2], " " .. v[1])
+      local cand = Candidate("simp_help", seg.start, seg._end, v[2], " " .. v[1])
       -- cand.preedit = input .. "\t※ 輸入【項目】每字第一個注音，調出相關符號。"
       yield(cand)
     end
@@ -113,9 +123,9 @@ local function translate(input, seg, env)
 
   -- if input:find("^``$") then
   -- if check_grave2 then
-  if input == "``" then
+  if input == "``" and not no_check_grave then
     for k, v in ipairs(env.table_gb_2) do
-      local cand = Candidate("help", seg.start, seg._end, v[2], " " .. v[1])
+      local cand = Candidate("simp_help", seg.start, seg._end, v[2], " " .. v[1])
       -- cand.preedit = input .. "\t※ 輸入【項目】每字第一個注音，調出相關符號。"
       -- cand.preedit = input .. "\t《emoji集》▶"
       yield(cand)

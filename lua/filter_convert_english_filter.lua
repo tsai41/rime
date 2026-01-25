@@ -8,6 +8,7 @@ easy 英文尾綴「;」或「;;」生成全大寫或首字母大寫。
 --]]
 local f_e_s = require("f_components/f_english_style")
 local english_s = f_e_s.english_s
+local english_u_all = f_e_s.english_u_all
 local english_u1 = f_e_s.english_u1
 local english_s2u = f_e_s.english_s2u
 
@@ -48,7 +49,8 @@ local function init(env)
   env.tips_en = "《Easy》"
 
   env.english_pattern = {
-    [";;"] = {comment = "〔全大寫〕", func = string.upper},
+    -- [";;"] = {comment = "〔全大寫〕", func = string.upper},
+    [";;"] = {comment = "〔全大寫〕", func = english_u_all},
     [";/"] = {comment = "〔全小寫〕", func = english_s},
     [";'"] = {comment = "〔間隔後大寫〕", func = english_s2u},
     [";"] = {comment = "〔開頭大寫〕", func = english_u1},
@@ -77,7 +79,7 @@ local function filter(inp, env)
     local mstr, cp, sp = string.match(c_input, env.match_pattern)  -- 取代 s1~ s5
     local cp_tab = env.english_pattern[cp]
     if cp_tab then
-      local e_cand = Candidate("en", start, caret_pos, cp_tab.func(mstr), cp_tab.comment)
+      local e_cand = Candidate("simp_en", start, caret_pos, cp_tab.func(mstr), cp_tab.comment)
       -- yield( change_preedit(e_cand, env.tips_en .. mstr .. cp .. sp) )
       -- yield( env.enable_tips and change_preedit(e_cand, env.tips_en .. mstr .. cp .. sp) or e_cand )
       yield( env.p_prefix ~= "" and change_preedit(e_cand, env.tips_en .. mstr .. cp .. sp) or e_cand )
@@ -128,7 +130,7 @@ local function convert_english_filter(input, env)
     local mstr, cp = c_input:match("^([-/a-z.,']+)([;/']*)$") -- 取代 s1~ s5
     local cp_tab = english_pattern[cp]
     if cp_tab then
-      yield( Candidate("en", start, _end, cp_tab.func(mstr), cp_tab.comment) )
+      yield( Candidate("simp_en", start, _end, cp_tab.func(mstr), cp_tab.comment) )
     end
   end
 end
@@ -152,7 +154,7 @@ local function p_convert_english_filter(input, env)
     local mstr, cp, sp = c_input:match("[.3]([-/a-z.,']+)([;/']*)( ?)$")  -- 取代 s1~ s5
     local cp_tab = english_pattern[cp]
     if cp_tab then
-      local e_cand = Candidate("en", start, _end, cp_tab.func(mstr), cp_tab.comment)
+      local e_cand = Candidate("simp_en", start, _end, cp_tab.func(mstr), cp_tab.comment)
       yield( change_preedit(e_cand, tips_en .. mstr .. cp .. sp) )
     end
   end
@@ -193,20 +195,20 @@ local function convert_english_filter(input, env)
   elseif (c1~=nil) then
     -- local es = _end - start - 1  --減一為扣掉「;」一個尾綴
     -- local c1 = string.sub(c1, -es)
-    yield(Candidate("en", start, _end, string.upper(english_s(c1)), "〔全大寫〕"))
+    yield(Candidate("simp_en", start, _end, string.upper(english_s(c1)), "〔全大寫〕"))
   elseif (c2~=nil) then
     -- local es = _end - start - 1  --減二為扣掉「;;」兩個尾綴
     -- local c2 = string.sub(c2, -es)
-    yield(Candidate("en", start, _end, english_u1(c2), "〔開頭大寫〕"))
+    yield(Candidate("simp_en", start, _end, english_u1(c2), "〔開頭大寫〕"))
   elseif (c3~=nil) then
     -- local es = _end - start - 1  --減二為扣掉「;;」兩個尾綴
     -- local c3 = string.sub(c3, -es)
-    yield(Candidate("en", start, _end, english_s(c3), "〔全小寫〕"))
-    -- yield(Candidate("en", start, _end, '字串總數：'..#c_input..' 開始：'..start..' 末尾數：'.._end..' 游標數：'..caret_pos, "〔測試〕"))  --測試用
+    yield(Candidate("simp_en", start, _end, english_s(c3), "〔全小寫〕"))
+    -- yield(Candidate("simp_en", start, _end, '字串總數：'..#c_input..' 開始：'..start..' 末尾數：'.._end..' 游標數：'..caret_pos, "〔測試〕"))  --測試用
   elseif (c4~=nil) then
-    yield(Candidate("en", start, _end, english_s2u(c4), "〔間隔後大寫〕"))
+    yield(Candidate("simp_en", start, _end, english_s2u(c4), "〔間隔後大寫〕"))
   elseif (c5~=nil) and (not context:has_menu()) then
-    yield(Candidate("en", start, _end, english_s(c5), "〔補空〕"))
+    yield(Candidate("simp_en", start, _end, english_s(c5), "〔補空〕"))
   end
 
 end
@@ -234,28 +236,28 @@ local function p_convert_english_filter(input, env)
 
   if caret_pos ~= #c_input then
   elseif (c1~=nil) then
-    -- local english = Candidate("en", start, _end, '字串總數：'..#c_input..' 開始：'..start..' 末尾數加一：'.._end..' 游標數：'..caret_pos, "〔測試〕")  --測試用
-    local english = Candidate("en", start, _end, string.upper(english_s(c1)), "〔全大寫〕")
+    -- local english = Candidate("simp_en", start, _end, '字串總數：'..#c_input..' 開始：'..start..' 末尾數加一：'.._end..' 游標數：'..caret_pos, "〔測試〕")  --測試用
+    local english = Candidate("simp_en", start, _end, string.upper(english_s(c1)), "〔全大寫〕")
     english.preedit = tips_en .. c1 .. s1
     yield(english)
     -- yield( change_preedit(english, tips_en .. c1 .. s1) )
   elseif (c2~=nil) then
-    local english = Candidate("en", start, _end, english_u1(c2), "〔開頭大寫〕")
+    local english = Candidate("simp_en", start, _end, english_u1(c2), "〔開頭大寫〕")
     english.preedit = tips_en .. c2 .. s2
     yield(english)
     -- yield( change_preedit(english, tips_en .. c2 .. s2) )
   elseif (c3~=nil) then
-    local english = Candidate("en", start, _end, english_s(c3), "〔全小寫〕")
+    local english = Candidate("simp_en", start, _end, english_s(c3), "〔全小寫〕")
     english.preedit = tips_en .. c3 .. s3
     yield(english)
     -- yield( change_preedit(english, tips_en .. c3 .. s3) )
   elseif (c4~=nil) then
-    local english = Candidate("en", start, _end, english_s2u(c4), "〔間隔後大寫〕")
+    local english = Candidate("simp_en", start, _end, english_s2u(c4), "〔間隔後大寫〕")
     english.preedit = tips_en .. c4 .. s4
     yield(english)
     -- yield( change_preedit(english, tips_en .. c4 .. s4) )
   elseif (c5~=nil) and (not context:has_menu()) then
-    local english = Candidate("en", start, _end, english_s(c5), "〔補空〕")
+    local english = Candidate("simp_en", start, _end, english_s(c5), "〔補空〕")
     english.preedit = tips_en .. c5 .. s5
     yield(english)
     -- yield( change_preedit(english, tips_en .. c5 .. s5) )

@@ -10,105 +10,53 @@
 --[[
 engine:
   translators:
-    - lua_translator@lua_custom_phrase
+    # - lua_translator@lua_custom_phrase  -- 須於 rime.lua 載入模塊。
+    - lua_translator@*_translator_lua_custom_phrase@lua_custom_phrase
 
 lua_custom_phrase:
   user_dict: "lua_custom_phrase"
 --]]
 ---------------------------------------------------------------
--- local function file_exists(path)
---     if type(path)~="string" then return false end
---     return os.rename(path,path) and true or false
--- end
-
--- local function isFile(path)
---     if not file_exists(path) then return false end
---     local f = io.open(path)
---     if f then
---       local res = f:read(1) and true or false
---       f:close()
---       return res
---     end
---     return false
--- end
-
--- local slash = package.path:sub(1,1)  -- package.path 跑出的內容太長，不用。
+local load_text_dict = require("load_custom/load_text_dict_out2tab")
+-- local change_preedit = require("filter_cand/change_preedit")
 ---------------------------------------------------------------
---- 「load_text_dict」把 txt 檔變成 lua table 供後續查詢。
 
-local function load_text_dict(text_dict)
-  -- --- text_dict == "" 已會處理，但挪用此函數時此條有用。
-  -- if text_dict == "" then return end
-  --- 當輸入 text_dict 不為 string 則跳開，該函數為 nil。
-  if (type(text_dict) ~= "string") then return end
-
-  local path = rime_api.get_user_data_dir()
-  -- local file_name = path .. "/" .. ( text_dict or "lua_custom_phrase" ) .. ".txt"  -- 如 text_dict 為 nil，下方已跳開，可不用 or
-  local file_name = path .. "/" .. text_dict .. ".txt"
-  -- local f = io.open(file_name, "r")
-
-  --- 當找不到該 txt 字典檔案則跳開，該函數為 nil。
-  -- if not isFile(file_name) then return end  -- 在 widonws 中會有問題。
-  -- if io.open(file_name) == nil then return log.error("lua_custom_phrase： Missing user_dict File!") end  -- 錯誤日誌中提示遺失檔案（不存在）
-  if io.open(file_name) == nil then return end
-  -- if (f == nil) then return end
-
-  local tab = {}
-  -- for line in io.open(file_name):lines() do
-  for line in io.lines(file_name) do  -- 以讀的形式進行，如果文件不存在會報錯，故前面需判別是否為 nil。因 lines() 完自動關閉，後面不能 io.close() 關閉，否則會報錯。
-  -- for line in f:lines() do
-    local v_text, v_code = string.match(line, "^([^\t#][^\t]*)\t([%d%l,./; -]+)\t?.*$")
-    if v_text then
-
-      -- tab[v_code] = v_text  -- 一個 code 只能有一條短語，下方可一個 code，多條短語。
-      --- 下方 table 格式為：{[v_code1]={'v_text1','v_text2',...},[v_code2]={'v_text3'},...}
-      local nn = {}
-      if tab[v_code] == nil then
-        -- local nn = {}
-        -- table.insert(nn, v_text)
-        -- nn[#nn+1] = v_text
-        nn[1] = v_text
-        tab[v_code] = nn
-      else
-        -- table.insert(tab[v_code], v_text)
-        tab[v_code][#tab[v_code]+1] = v_text
-      end
-      --- 以下防止記憶體洩漏暴漲？！不會立即清理記憶體，但會回退，測試！
-      nn = nil
-
-    end
-  end
-
-  -- f:close()
-  -- io.close(f)
-
-  return tab
-end
-
----------------------------------------------------------------
 local function init(env)
-  engine = env.engine
-  schema = engine.schema
-  config = schema.config
+  local engine = env.engine
+  local schema = engine.schema
+  local config = schema.config
+  local prefix = config:get_string("mf_translator/prefix")  -- env.prefix
+  env.prefix_a = prefix .. "a"
+  env.prefix_comma = prefix .. ","
   -- namespace = "lua_custom_phrase"
-  env.textdict = config:get_string(env.name_space .. "/user_dict") or ""
-  --- 以下 「load_text_dict」 可能為 nil 故要 or {}
-  env.tab = load_text_dict(env.textdict) or {}  -- 更新 txt 需「重新部署」或方案變換
+  local textdict = config:get_string(env.name_space .. "/user_dict") or ""  -- env.textdict
+  --- 以下 「load_text_dict」 可能為 nil or {}
+  --- 更新 txt 需「重新部署」或方案變換。
+  if textdict == "" then
+    env.tab = {['zz']={'※ 無短語字典連結(schema)'}}
+    env.tab_list = {{ text = "", code = "※ 無短語字典連結(schema)", sort = 0 }}
+  else
+    env.tab = load_text_dict(textdict)[1] or {}
+    env.tab_list = load_text_dict(textdict)[2] or {}
+  end
   env.quality = 10
-  -- log.info("lua_custom_phrase: \'" .. env.textdict .. ".txt\' Initilized!")  -- 日誌中提示已經載入 txt 短語
+  -- log.info("lua_custom_phrase: \'" .. textdict .. ".txt\' Initilized!")  -- 日誌中提示已經載入 txt 短語
+  --- 以下擷取「translator/preedit_format」轉換格式。
+  --- 擷取後使用「env.t_preedit:apply(input)」去轉換。  -- convert string
+  local t_preedit_fmt_list = config:get_list("translator/preedit_format")  -- load ConfigList form path
+  env.t_preedit = Projection()  -- create Projection obj
+  env.t_preedit:load(t_preedit_fmt_list)  -- load convert rules
 end
 
 
 local function translate(input, seg, env)
-  local tag_abc = seg:has_tag("abc")
-  --- 當 schema 中找不到設定則跳開（env.textdict為""，translate 函數為 nil）
-  --- 預防出現在掛接輸入中，限定在 abc 段落（tag_abc）
-  -- if env.textdict == "" then return log.error("lua_custom_phrase： user_dict File Name is Wrong or Missing!") end  -- 錯誤日誌中提示名稱錯誤或遺失
-  if not tag_abc or env.textdict == "" then return end
-
   -- local engine = env.engine
   -- local context = engine.context
   -- local caret_pos = context.caret_pos
+
+  local tag_abc = seg:has_tag("abc")
+  local tag_mf = seg:has_tag("mf_translator")
+
   --- 以下 「load_text_dict」 可能為 nil 故要 or {}
   -- local text_dict_tab = load_text_dict("lua_custom_phrase") or {}  -- 直接限定 txt 字典
   -- local text_dict_tab = load_text_dict(env.textdict) or {}  -- 更新 txt 不需「重新部署」
@@ -116,15 +64,47 @@ local function translate(input, seg, env)
   -- local c_p_tab = text_dict_tab[input]  -- 更新 txt 不需「重新部署」
   local c_p_tab = env.tab[input]  -- 更新 txt 需「重新部署」或方案變換
 
-  if c_p_tab then
+  -- --- 當 schema 中找不到設定則跳開（env.textdict為""，translate 函數為 nil）
+  -- --- 以下 env.textdict == "" 狀況提前於 init 處理。
+  -- if env.textdict == "" then return end
+  if tag_abc and c_p_tab then
   -- if (caret_pos == #input) and c_p_tab then  --只能在一開頭輸入，掛接後續無法。
     for _, v in pairs(c_p_tab) do
-      local v = string.gsub(v, "\\n", "\n")  -- 可以多行文本
-      local v = string.gsub(v, "\\r", "\r")  -- 可以多行文本
-      local cand = Candidate("short", seg.start, seg._end, v, "〔短語〕")
+      -- local v = string.gsub(v, "\\n", "\n")  -- 可以多行文本
+      -- local v = string.gsub(v, "\\r", "\r")  -- 可以多行文本
+      local cand = Candidate("simp_short", seg.start, seg._end, v, "〔短語〕")
+      -- local short_preedit = env.t_preedit:apply(input)
+      -- local cand = change_preedit(cand, short_preedit)
+      -- cand.preedit = short_preedit
+      cand.preedit = env.t_preedit:apply(input)
       cand.quality = env.quality
       yield(cand)
     end
+  elseif tag_mf and (input == env.prefix_a or input == env.prefix_comma) then
+  -- elseif tag_mf and (input == env.prefix .. "a" or input == env.prefix .. ",") then
+  -- if seg:has_tag("mf_translator") and (input == env.prefix .. "a") then
+    -- tab_list = env.tab_list
+    for k, v in pairs(env.tab_list) do
+      -- local text = v.text
+      -- local text = string.gsub(text, "\\n", "\n")  -- 可以多行文本
+      -- local text = string.gsub(text, "\\r", "\r")  -- 可以多行文本
+      local cand = Candidate("simp_short_list", seg.start, seg._end, v.text, v.code)
+      -- local cand = Candidate("simp_short_list", seg.start, seg._end, v.text, v.code.."  〔"..v.sort.."〕")
+      -- local cand = Candidate("simp_short_list", seg.start, seg._end, v[1], v[2].."  〔"..v[3].."〕")
+      cand.preedit = input .. "\t 【短語總列表】"
+      yield(cand)
+    end
+
+  --   return
+  -- -- --- 當 schema 中找不到設定則跳開（env.textdict為""，translate 函數為 nil）
+  -- -- --- 預防出現在掛接輸入中，限定在 abc 段落（tag_abc）
+  -- -- if env.textdict == "" then return log.error("lua_custom_phrase： user_dict File Name is Wrong or Missing!") end  -- 錯誤日誌中提示名稱錯誤或遺失
+  -- -- if not tag_abc or env.textdict == "" then return end
+  -- -- if not tag_abc then return end
+  -- -- if not seg:has_tag("abc") then return end
+  -- elseif not tag_abc then
+  --   return
+
   end
 
   -- --- 以下測試用

@@ -77,7 +77,7 @@
 #===================================
 ---
 name: phrases.jp_hkkseg
-version: "202308"
+version: "202311"
 sort: by_weight #original
 use_preset_vocabulary: false
 # max_phrase_length: 7
@@ -537484,131 +537484,140 @@ S彼氏上々	e; su; ka; re; shi; jo; u; jo; u;
 #####END#####
 
 #####@ google mozc 詞典（補空用）#####
-八	ha;t;
-卆	so;s;
-卒	so;s;
-喫	ki;s;
-失	shi;s;
-察	sa;s;
-屈	ku;s;
-律	ri;s;
-徹	te;s;
-拉	ra;s;
-接	se;s;
-撤	te;s;
-日	ni;p;
-欝	u;s;
-欲	ho;s;
-決	ke;s;
-没	bo;s;
-渇	ka;s;
-突	tsu;p;
-節	se;s;
-結	ke;s;
-絶	ze;s;
-罰	ba;s;
-脱	da;s;
-装	yo;s;
-逸	i;s;
-閲	e;s;
-鬱	u;s;
-一	i;k;
-一	i;s;
-一	i;t;
-一	i;p;
-三	mi;t;
-八	ha;k;
-六	ro;k;
-出	de;p;
-列	re;s;
-合	ga;p;
-喝	ka;s;
-四	yo;t;
-圧	a;s;
-強熱	kyo; u; ne;s;
-御察	go; sa;s;
-摂	se;s;
-日	ni;t;
-星四	ho; shi; yo;t;
-滅	me;s;
-熱	ne;s;
-発	ha;s;
-血	ke;s;
-達	ta;s;
-鉄	te;c;
-骨	ko;t;
-以	mo;t;
-日	ni;s;
-颯	sa;t;
-先達	se; n; da;t;
-達	da;t;
-別	be;s;
-割	ka;p;
-抜	ba;t;
-湿	shi;s;
-石	se;k;
-血	ke;t;
-坊	bo;c;
-払	fu;s;
-捏	de;c;
-薬	ya;k;
-拍手喝	ha; ku; shu; ka;s;
+八	ha;t;	0%
+卆	so;s;	0%
+卒	so;s;	0%
+喫	ki;s;	0%
+失	shi;s;	0%
+察	sa;s;	0%
+屈	ku;s;	0%
+律	ri;s;	0%
+徹	te;s;	0%
+拉	ra;s;	0%
+接	se;s;	0%
+撤	te;s;	0%
+日	ni;p;	0%
+欝	u;s;	0%
+欲	ho;s;	0%
+決	ke;s;	0%
+没	bo;s;	0%
+渇	ka;s;	0%
+突	tsu;p;	0%
+節	se;s;	0%
+結	ke;s;	0%
+絶	ze;s;	0%
+罰	ba;s;	0%
+脱	da;s;	0%
+装	yo;s;	0%
+逸	i;s;	0%
+閲	e;s;	0%
+鬱	u;s;	0%
+一	i;k;	0%
+一	i;s;	0%
+一	i;t;	0%
+一	i;p;	0%
+三	mi;t;	0%
+八	ha;k;	0%
+六	ro;k;	0%
+出	de;p;	0%
+列	re;s;	0%
+合	ga;p;	0%
+喝	ka;s;	0%
+四	yo;t;	0%
+圧	a;s;	0%
+強熱	kyo; u; ne;s;	0%
+御察	go; sa;s;	0%
+摂	se;s;	0%
+日	ni;t;	0%
+星四	ho; shi; yo;t;	0%
+滅	me;s;	0%
+熱	ne;s;	0%
+発	ha;s;	0%
+血	ke;s;	0%
+達	ta;s;	0%
+鉄	te;c;	0%
+骨	ko;t;	0%
+以	mo;t;	0%
+日	ni;s;	0%
+颯	sa;t;	0%
+先達	se; n; da;t;	0%
+達	da;t;	0%
+別	be;s;	0%
+割	ka;p;	0%
+抜	ba;t;	0%
+湿	shi;s;	0%
+石	se;k;	0%
+血	ke;t;	0%
+坊	bo;c;	0%
+払	fu;s;	0%
+捏	de;c;	0%
+薬	ya;k;	0%
+拍手喝	ha; ku; shu; ka;s;	0%
 ###### 單字jpnin1.dict.yaml #####
-六	mu;t;
+六	mu;t;	0%
 ###############@ 其他字典（補空用） ####################
-一	i;g;
-些	chi;t;
-卒	shu;s;
-合	ga;s;
-実	ji;t;
-少	chi;t;
-曾	ka;t;
-没	mo;s;
-謁	e;s;
-達	ta;t;
-今以	i; ma; mo;t;
-今日	ko; n; `ni;t;
-佚	i;s;
-先以	ma; zu; mo;t;
-先達	sa; ki; da;t;
-六	ro;g;
-凝乎	ji; -;t;
-凝乎	ji; i;t;
-凝乎	ji;t;
-乎	-;t;
-乎	i;t;
-切	ki;k;
-前以	ma; e; mo;t;
-尚以	na; o; mo;t;
-尺	se;k;
-尻	shi; ri;p;
-御達	o; ta;s;
-必	hi;s;
-歿	bo;s;
-百八	hya; ku; ya;t;
-八	ya;t;
-真	ma;s;
-裂	re;p;
-鉄	te;t;
-陸	ri;k
-父	to;s;
-仰	o;s;
-平	he;c;
-御父	o; to;s;
-父	to;c;,
-目付	me;k;
-相接	a; i; se;s;
-窃	se;c;
-見付	mi;k;
-言	i;t;
-小父	o;c;
-御坊	o; bo;c;
-御父	o; to;t;
-父	to;t;
-憎	ni; ku;t;
-突発性発	to; ppa; tsu; se; i; ha;s;
-好機逸	ko; u; ki; i;s;
-石以	i; shi; mo;t;
-欲	re; no; ho;s;
-己達	o; no; re; ta;s;
+一	i;g;	0%
+些	chi;t;	0%
+卒	shu;s;	0%
+合	ga;s;	0%
+実	ji;t;	0%
+少	chi;t;	0%
+曾	ka;t;	0%
+没	mo;s;	0%
+謁	e;s;	0%
+達	ta;t;	0%
+今以	i; ma; mo;t;	0%
+今日	ko; n; `ni;t;	0%
+佚	i;s;	0%
+先以	ma; zu; mo;t;	0%
+先達	sa; ki; da;t;	0%
+六	ro;g;	0%
+凝乎	ji; -;t;	0%
+凝乎	ji; i;t;	0%
+凝乎	ji;t;	0%
+乎	-;t;	0%
+乎	i;t;	0%
+切	ki;k;	0%
+前以	ma; e; mo;t;	0%
+尚以	na; o; mo;t;	0%
+尺	se;k;	0%
+尻	shi; ri;p;	0%
+御達	o; ta;s;	0%
+必	hi;s;	0%
+歿	bo;s;	0%
+百八	hya; ku; ya;t;	0%
+八	ya;t;	0%
+真	ma;s;	0%
+裂	re;p;	0%
+鉄	te;t;	0%
+陸	ri;k	0%
+父	to;s;	0%
+仰	o;s;	0%
+平	he;c;	0%
+御父	o; to;s;	0%
+父	to;c;,	0%
+目付	me;k;	0%
+相接	a; i; se;s;	0%
+窃	se;c;	0%
+見付	mi;k;	0%
+言	i;t;	0%
+小父	o;c;	0%
+御坊	o; bo;c;	0%
+御父	o; to;t;	0%
+父	to;t;	0%
+憎	ni; ku;t;	0%
+突発性発	to; ppa; tsu; se; i; ha;s;	0%
+好機逸	ko; u; ki; i;s;	0%
+石以	i; shi; mo;t;	0%
+欲	re; no; ho;s;	0%
+己達	o; no; re; ta;s;	0%
+###############@ 特殊假名（補空用） ####################
+# りぇ	ri, xye,	0%
+# リェ	ri. xye.	0%
+# りぃ	ri, xyi,	0%
+# リィ	ri. xyi.	0%
+ぇ	xye,	0%
+ェ	xye.	0%
+ぃ	xyi,	0%
+ィ	xyi.	0%
 ####################END2######################

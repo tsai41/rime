@@ -64,7 +64,7 @@ local function init(env)
       , { "【 d 假名】【 n 假名】【 h 假名】【 b 假名】【 p 假名】", "𝟓𝟕" }
       , { "【 m 假名】【 y 假名】【 r 假名】【 w 假名】", "𝟓𝟖" }
       , { " ｢圈｣｢框｣｢括｣數字字母：【 0 ~ 10 】【 1-0 ~ 5-0 】【 a ~ z 】", "𝟓𝟗" }
-      -- , { "═══  結束  ═══  ", "𝟔𝟎" }
+      , { "═══  結束  ═══  ", "𝟔𝟎" }
       -- -- , { "===========  結束  ===========    ", "𝟔𝟎" }
       -- , { "", "𝟔𝟏" }
       -- , { "", "𝟔𝟐" }
@@ -83,12 +83,12 @@ local function init(env)
       , { "   〖 4 〗生氣 〖 5 〗驚訝 〖 6 〗無奈", "𝟚" }
       , { "   〖 7 〗喜     〖 8 〗樂     〖 9 〗怒", "𝟛" }
       , { "   〖 0 〗指示和圖示          〖 - 〗回話", "𝟜" }
-      -- , { "    ═══  結束  ═══  ", "𝟝" }
+      , { "    ═══  結束  ═══  ", "𝟝" }
       -- -- , { "    ===========  結束  ===========    ", "𝟝" }
-      -- , { "", "𝟞" }
-      -- , { "", "𝟟" }
-      -- , { "", "𝟠" }
-      -- , { "", "𝟡" }
+      , { "", "𝟞" }
+      , { "", "𝟟" }
+      , { "", "𝟠" }
+      , { "", "𝟡" }
       -- , { "", "𝟙𝟘" }
   }
   env.table_sd_3 = {
@@ -107,9 +107,9 @@ end
 
 -- local function instruction_dbpmf(input, seg, env)
 local function translate(input, seg, env)
-  engine = env.engine
-  context = engine.context
-  caret_pos = context.caret_pos
+  local engine = env.engine
+  local context = engine.context
+  local caret_pos = context.caret_pos
   -- local check_semicolon = string.match(input, "^;$")
   -- local check_semicolon2 = string.match(input, "^;;$")
   -- local check_e = string.match(input, "^e$")
@@ -121,7 +121,7 @@ local function translate(input, seg, env)
     --   yield(cand)
     -- end
     for k, v in ipairs(env.table_sd_1) do
-      local cand = Candidate("help", seg.start, seg._end, v[2], " " .. v[1])
+      local cand = Candidate("simp_help", seg.start, seg._end, v[2], " " .. v[1])
       -- cand.preedit = input .. "\t※ 輸入【項目】每字第一個注音，調出相關符號。"
       yield(cand)
     end
@@ -131,7 +131,7 @@ local function translate(input, seg, env)
   -- if check_semicolon2 and caret_pos == 2 then
   if input == ";;" and caret_pos == 2 then
     for k, v in ipairs(env.table_sd_2) do
-      local cand = Candidate("help", seg.start, seg._end, v[2], " " .. v[1])
+      local cand = Candidate("simp_help", seg.start, seg._end, v[2], " " .. v[1])
       -- cand.preedit = input .. "\t※ 輸入【項目】每字第一個注音，調出相關符號。"
       -- cand.preedit = input .. "\t《emoji集》▶"
       yield(cand)
@@ -142,8 +142,9 @@ local function translate(input, seg, env)
   -- if check_e and caret_pos == 1 then
   if input == "e" and caret_pos == 1 then
     for k, v in ipairs(env.table_sd_3) do
-      local cand = Candidate("help", seg.start, seg._end, v[2], " " .. v[1])
-      cand.preedit = input .. "\t《查詢鍵位注音》▶"
+      local cand = Candidate("simp_help", seg.start, seg._end, v[2], " " .. v[1])
+      -- cand.preedit = input .. "\t《查詢鍵位注音》▶"
+      cand.preedit = input .. "\t《雙拼注音鍵位說明》"
       yield(cand)
     end
   end
