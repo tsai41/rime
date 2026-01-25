@@ -8,6 +8,14 @@
   - **Squirrel**: v1.1.2
   - **Onion Settings**: 2026-01-25 更新
 
+## 🛠️ 常見配置
+- **切換單行/雙行顯示**：
+  - 編輯 `bo_mixin[1-4].custom.yaml`。
+  - 修改 `translator/preedit_format` 項目的 `__include` 路徑：
+    - **單行 (Back 樣式)**：`element_bopomo:/preedit_b_...`
+    - **雙行 (Paragraph 樣式)**：`element_bopomo:/preedit_p_...`
+  - 修改後務必點擊 **「佈署」 (Deploy)** 生效。
+
 ## 🔗 相關連結
 - [洋蔥方案原始倉庫 (Onion_Rime_Files)](https://github.com/oniondelta/Onion_Rime_Files)
 - [Rime 官方文件](https://github.com/rime/home/wiki)
