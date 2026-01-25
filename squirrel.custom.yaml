@@ -30,16 +30,16 @@ patch:
   # 預設關閉中文輸入
   app_options/dev.warp.Warp-Stable: # Wrap 
     ascii_mode: true
-  app_options/com.googlecode.iterm2: # iTerm2
-    ascii_mode: true
+  # app_options/com.googlecode.iterm2: # iTerm2
+  #   ascii_mode: true
   app_options/com.contextsformac.Contexts: # Contexts
     ascii_mode: true
-  app_options/com.jinghaoshe.qspace: # QSpace
-    ascii_mode: true
-  app_options/com.mongodb.compass: # MongoDB compass
-    ascii_mode: true
-  app_options/me.qii404.another-redis-desktop-manager: # Another Redis Desktop Manager
-    ascii_mode: true
+  # app_options/com.jinghaoshe.qspace: # QSpace
+  #   ascii_mode: true
+  # app_options/com.mongodb.compass: # MongoDB compass
+  #   ascii_mode: true
+  # app_options/me.qii404.another-redis-desktop-manager: # Another Redis Desktop Manager
+  #   ascii_mode: true
   app_options/com.krill.CodeRunner-setapp: # CodeRunner
     ascii_mode: true
   app_options/com.raycast.macos: # Raycast
