@@ -4,7 +4,7 @@
 schema:
   schema_id: bo_mixin1
   name: "☆注音(洋蔥mix-in版 1 )☆〔拉日 ˇ  ˋ 韓〕"
-  version: "202305"
+  version: "202512"
   author:
     - 『洋蔥』
   description: |
@@ -47,9 +47,20 @@ switches:
   - name: back_mark
     reset: 1
     states: [ 無註, 註釋 ]
+  # - name: back_mark_series
+  #   reset: 1
+  #   # states: [ 無註, 註釋 ]
   - name: punct_mark
     reset: 1
-#    states: [ 無, 註 ]
+    # states: [ 無, 註 ]
+  - name: unicode_comment
+    reset: 0
+    states: [ '🄽', '🅄' ]
+    # states: [ 'nil', 'Unicode(URL)' ]
+  # - name: debug_comment
+  #   reset: 0
+    # states: [ 'Ⓝ', 'Ⓓ' ]
+    # states: [ 'normal', 'Debug' ]
   - name: en_sort
     reset: 0
     states: [ 個排, 序排 ]
@@ -68,17 +79,24 @@ engine:
     # - lua_filter@charset_filter2  #去除opencc轉換後留下的「᰼᰼」。
     # - lua_filter@charset_filter  #打開後中文只保留CJK（精簡），但外語不受影響。
     # - lua_filter@missing_mark_filter  #補上標點符號因直上和 opencc 衝突沒附註之選項
-    - lua_filter@preedit_model_filter
+    # - lua_filter@preedit_model_charset_filter2_filter
+    # - lua_filter@preedit_model_filter
     - reverse_lookup_filter@e_reverse_lookup
     - lua_filter@en_sort_filter
     - lua_filter@convert_english_filter
     - lua_filter@convert_japan_filter
     - simplifier@emoji_switch
     - simplifier@zh_cn
-    - simplifier@back_mark
+    - lua_filter@back_mark_filter@back_mark
+    - lua_filter@back_mark_filter@back_mark_series
+    # - simplifier@back_mark
+    # - simplifier@back_mark_series
     - simplifier@punct_mark
     - reverse_lookup_filter@bpm_reverse_lookup
     - uniquifier
+    - lua_filter@comment_filter_unicode  # unicode 和 debug 分開，同時開啟無法記憶
+    # - lua_filter@comment_filter_debug  # unicode 和 debug 分開，同時開啟無法記憶
+    # - lua_filter@comment_filter_unicode_debug
   processors:
     - lua_processor@mix_apc_s2rm_ltk
     # - lua_processor@ascii_punct_change
@@ -86,6 +104,7 @@ engine:
     - ascii_composer
     - recognizer
     - key_binder
+    - recognizer@recognizer2  #順序超過 key_binder 會有 Bug（輸入ㄡˇㄩ會跑出ㄡˇㄡㄩ）？待釐清！
     - speller
     - punctuator
     - selector
@@ -95,16 +114,18 @@ engine:
   segmentors:
     - ascii_segmentor
     - matcher
+    - matcher@recognizer2
     - abc_segmentor
     - affix_segmentor@emoji_series
     - affix_segmentor@easy_en
-    - affix_segmentor@easy_en_upper
+    # - affix_segmentor@easy_en_upper
     # - affix_segmentor@easy_en_script
     - affix_segmentor@japan
     - affix_segmentor@cyr2
     - affix_segmentor@gr2
     - affix_segmentor@fs2
     - affix_segmentor@all_bpm
+    - lua_segmentor@mount_allbpm
     - affix_segmentor@reverse2_lookup
     - punct_segmentor
     - fallback_segmentor
@@ -152,15 +173,39 @@ emoji_switch:
   tags: [ abc ]
 #  tips: all
 
+back_mark_series:
+  opencc_config: back_mark_series.json
+  option_name: back_mark
+  tags: [ emoji_series ]
+
 back_mark:
   opencc_config: back_mark.json
   option_name: back_mark
-  show_in_comment: true
-  tags: [ abc, emoji_series, fs2, japan ]
-  tips: char #all
-  comment_format:
-    - xform/^/  /
-    - xform/@/ /
+  tags: [ abc, fs2, japan ]
+
+# back_mark_series:
+#   opencc_config: back_mark_series.json
+#   option_name: back_mark_series
+#   show_in_comment: true
+#   tags: [ emoji_series ]
+#   tips: all #char #none
+#   comment_format:
+#     - erase/^.*〕.+$/  #去除一個條目有多個轉換。
+#     - erase/^.+〔.*$/  #去除一個條目有多個轉換。
+#     - xform/^/  /  #沒 comment 的條目不會因此多兩空白。
+#     - xform/@/ /
+
+# back_mark:
+#   opencc_config: back_mark.json
+#   option_name: back_mark
+#   show_in_comment: true
+#   tags: [ abc, fs2, japan ]
+#   tips: char #all #none
+#   comment_format:
+#     # - erase/^.*〕.+$/  #去除一個條目有多個轉換。
+#     # - erase/^.+〔.*$/  #去除一個條目有多個轉換。
+#     - xform/^/  /  #沒 comment 的條目不會因此多兩空白。
+#     - xform/@/ /
 
 punct_mark:
   opencc_config: punct_mark.json
@@ -172,9 +217,6 @@ punct_mark:
     - erase/^.*〔.*〕.+$/
     - erase/^.+〔.*〕$/
 
-preedit_model_filter:
-  tags: [ abc ]
-
 en_sort_filter:
   tags: [ easy_en ]
 
@@ -184,9 +226,12 @@ convert_english_filter:
 convert_japan_filter:
   tags: [ japan ]
 
-mix_cf2_miss_filter:
-  tags: [ punct, reverse2_lookup ]
-  # tags: [ punct, abc, reverse2_lookup ]
+# preedit_model_charset_filter2_filter:
+#   tags: [ abc ]
+
+# mix_cf2_miss_filter:
+#   tags: [ punct, reverse2_lookup ]
+#   # tags: [ punct, abc, reverse2_lookup ]
 ################################### 選單 ######################################
 menu:
   __include: element_bopomo:/menu
@@ -399,19 +444,21 @@ speller:
 translator:
   dictionary: bo_mixin.extended
   prism: bo_mixin1
-  enable_charset_filter: false
-  initial_quality: 1
+  # enable_charset_filter: false
+  enable_completion: false #新版有長詞補全，用此關閉
+  enable_user_dict: true
+  # initial_quality: 1
   preedit_format:
     __include: element_bopomo:/preedit_b_1_2_4
 ################################### 調出 Easy 英語 ######################################
 easy_en:
   tag: easy_en
   dictionary: easy_en_lower #easy_en_super
-  enable_encoder: false
-  encode_commit_history: false
-  enable_completion: true
-  sentence_over_completion: false
+  # enable_encoder: false
+  # encode_commit_history: false
   enable_sentence: false
+  enable_completion: true
+  # sentence_over_completion: false
   enable_user_dict: false
   # strict_spelling: false
   # spelling_hints: 2
@@ -452,11 +499,11 @@ easy_en:
 easy_en_upper:
   tag: easy_en_upper
   dictionary: easy_en_upper
-  enable_encoder: false
-  encode_commit_history: false
-  enable_completion: false
-  sentence_over_completion: false
+  # enable_encoder: false
+  # encode_commit_history: false
   enable_sentence: false
+  enable_completion: false
+  # sentence_over_completion: false
   enable_user_dict: false
   preedit_format:
     - xform/^/《Easy》/
@@ -475,8 +522,8 @@ e_reverse_lookup:
 japan:
   tag: japan
   dictionary: jpnin1.extended
+  # enable_charset_filter: false
   enable_completion: false
-  enable_sentence: false
   enable_user_dict: true
   prefix: "4"
   suffix: "'"
@@ -507,8 +554,8 @@ japan:
 cyr2:
   tag: cyr2
   dictionary: cyrillic.extended
+  # enable_charset_filter: false
   enable_completion: false
-  enable_sentence: false
   enable_user_dict: true
   prefix: "6"
   suffix: "'"
@@ -529,8 +576,8 @@ cyr2:
 gr2:
   tag: gr2
   dictionary: greek.extended
+  # enable_charset_filter: false
   enable_completion: false
-  enable_sentence: false
   enable_user_dict: true
   prefix: "7"
   suffix: "'"
@@ -546,8 +593,8 @@ fs2:
   tag: fs2
   dictionary: fullshape.extended
   prism: fullshape
+  # enable_charset_filter: false
   enable_completion: false
-  enable_sentence: false
   enable_user_dict: true
   prefix: "]["
   suffix: "'"
@@ -562,8 +609,8 @@ fs2:
 all_bpm:
   tag: all_bpm
   dictionary: allbpm
+  # enable_charset_filter: false
   enable_completion: false
-  enable_sentence: false
   enable_user_dict: false
   prefix: "';"
   suffix: "'"
@@ -588,8 +635,8 @@ all_bpm:
 reverse2_lookup:
   tag: reverse2_lookup
   dictionary: cangjie5
+  # enable_charset_filter: false
   enable_completion: false
-  enable_sentence: false
   enable_user_dict: true
   prefix: "="
   suffix: "'"
@@ -607,7 +654,7 @@ bpm_reverse_lookup:
   dictionary: bo_mixin.extended
   comment_format:
     - xform/@[a-z]+ ?//
-    - xform/!!![a-z]+ ?//
+    - xform/!!!?[a-z]+ ?//
     - xform/iu/iU/ #iou
     - xform/ui/uI/ #uei
     - xform/ong/ung/
@@ -637,8 +684,12 @@ bpm_reverse_lookup:
 emoji_series:
   tag: emoji_series
   dictionary: symbols_bpmf
-  enable_completion: false
+  # enable_charset_filter: false
+  # enable_encoder: false
+  # encode_commit_history: false
   enable_sentence: false
+  enable_completion: false
+  # sentence_over_completion: false
   enable_user_dict: true
   prefix: "`"
   suffix: "'"
@@ -661,7 +712,12 @@ editor:
 ########################## 正則調出各種功能 ##############################
 recognizer:
   patterns:
-    __include: element_bopomo:/patterns_mixin_1_2_4
+    __include: element_bopomo:/r_patterns_mixin_1_2_4
+    # __include: element_bopomo:/patterns_mixin_1_2_4
+
+recognizer2:
+  patterns:
+    __include: element_bopomo:/r2_patterns_mixin_1_2_4
 
 style:
   inline_preedit: false
