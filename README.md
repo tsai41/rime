@@ -20,6 +20,12 @@
     - `inline_ascii`: 切換為英文，輸入內容留在預編輯區。
     - `commit_text`: 提交當前候選字並切換為英文。
     - `noop`: 停用該按鍵的單獨切換功能。
+- **特定 App 自動切換英文 (ascii_mode)**：
+  - 編輯 `squirrel.custom.yaml`。
+  - 在 `patch` 下方加入 `app_options/BundleID: { ascii_mode: true }`。
+  - **如何取得 Bundle ID**：
+    - 在終端機執行：`osascript -e 'id of app "應用程式名稱"'` (例如 `"Warp"`)。
+    - 或查看應用程式內的 `Contents/Info.plist`。
   - 修改後務必點擊 **「佈署」 (Deploy)** 生效。
 
 ## 🔗 相關連結

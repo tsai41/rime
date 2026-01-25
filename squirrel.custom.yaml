@@ -27,29 +27,26 @@ patch:
 #   app_options/com.alfredapp.Alfred: {}
 ################################################### 
 
-  # 預設關閉中文輸入
-  app_options/dev.warp.Warp-Stable: # Wrap 
-    ascii_mode: true
-  # app_options/com.googlecode.iterm2: # iTerm2
-  #   ascii_mode: true
-  app_options/com.contextsformac.Contexts: # Contexts
-    ascii_mode: true
-  # app_options/com.jinghaoshe.qspace: # QSpace
-  #   ascii_mode: true
-  # app_options/com.mongodb.compass: # MongoDB compass
-  #   ascii_mode: true
-  # app_options/me.qii404.another-redis-desktop-manager: # Another Redis Desktop Manager
-  #   ascii_mode: true
-  app_options/com.krill.CodeRunner-setapp: # CodeRunner
-    ascii_mode: true
-  app_options/com.raycast.macos: # Raycast
-    ascii_mode: true
-  app_options/com.mitchellh.ghostty: # Ghostty
-    ascii_mode: true
-  app_options/com.sproutcube.Shortcat: # Shortcat
-    ascii_mode: true
-  app_options/org.pgadmin.pgadmin4: # pgAdmin4
-    ascii_mode: true
+  # ===================================================
+  # 特定 App 初始狀態設定 (預設開啟英文)
+  # ===================================================
+  # 終端機與開發工具
+  app_options/dev.warp.Warp-Stable: { ascii_mode: true }                  # Warp
+  app_options/com.mitchellh.ghostty: { ascii_mode: true }                 # Ghostty
+  app_options/com.krill.CodeRunner-setapp: { ascii_mode: true }           # CodeRunner
+  # app_options/com.googlecode.iterm2: { ascii_mode: true }               # iTerm2
+
+  # 系統與效率工具
+  app_options/com.raycast.macos: { ascii_mode: true }                     # Raycast
+  app_options/com.contextsformac.Contexts: { ascii_mode: true }           # Contexts
+  app_options/com.sproutcube.Shortcat: { ascii_mode: true }               # Shortcat
+  app_options/com.jinghaoshe.qspace: { ascii_mode: true }                 # QSpace
+
+  # 資料庫管理工具
+  app_options/com.mongodb.compass: { ascii_mode: true }                   # MongoDB Compass
+  app_options/me.qii404.another-redis-desktop-manager: { ascii_mode: true } # Redis Desktop Manager
+  app_options/org.pgadmin.pgadmin4: { ascii_mode: true }                  # pgAdmin4
+  app_options/at.eggerapps.Postico: { ascii_mode: true }                  # Postico
 
 ###################################################
 # 預設的配色方案及代碼（指定爲 style/color_scheme ）
@@ -221,13 +218,13 @@ patch:
     border_color: 0xE0B693                          # 邊框色
     font_face: "HYQiHei-55S Book,HanaMinA Regular"  # 候選詞字體
     font_point: 14                                  # 候選字詞大小
-    text_color: 0x424242                            # 高亮選中詞顏色
     label_font_face: "SimHei"                       # 候選詞編號字體
     label_font_point: 10                            # 候選編號大小
     label_color: 0xcbcbcb                           # 預選欄編號顏色
     candidate_text_color: 0x555555                  # 預選項文字顏色
     text_color: 0x9e9e9e                            # 拼音行文字顏色，24位色值，16進制，BGR順序
     comment_text_color: 0x999999                    # 拼音等提示文字顏色
+
     hilited_text_color: 0x9e9e9e                    # 高亮拼音 (需要開啓內嵌編碼)
     hilited_candidate_text_color: 0x000000          # 第一候選項文字顏色
     hilited_candidate_back_color: 0xfff0e4          # 第一候選項背景背景色
