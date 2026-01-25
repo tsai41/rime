@@ -8,16 +8,7 @@
   - **Squirrel**: v1.1.2
   - **Onion Settings**: 2026-01-25 更新
 
-## 🌟 特色功能
-
-本方案核心為 `bo_mixin` 系列，旨在提供一個「全能型」的輸入環境，支援多國語言與豐富的擴展功能：
-
-- **多語言輸入**：支援注音 (Bopomo)、Easy English (前綴 `3`)、日語 (前綴 `4`)、斯拉夫語 (前綴 `6`)、希臘語 (前綴 `7`)。
-- **Lua 強力擴展**：動態翻譯（日期、時間、計算機）、進階濾鏡（CJK 字符過濾、自動註釋）、按鍵處理優化。
-- **符號與 Emoji**：整合 OpenCC 實現 Emoji 提示與特殊符號映射。
-
 ## 🔗 相關連結
-
 - [洋蔥方案原始倉庫 (Onion_Rime_Files)](https://github.com/oniondelta/Onion_Rime_Files)
 - [Rime 官方文件](https://github.com/rime/home/wiki)
 
