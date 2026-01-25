@@ -18,11 +18,6 @@ sync/
 *.table.bin
 *.reverse.bin
 
-# Rime 使用者配置
-user.yaml
-installation.yaml
-squirrel.custom.yaml
-
 # 臨時檔、備份檔
 *.bak
 *.tmp

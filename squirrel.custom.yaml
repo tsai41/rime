@@ -34,7 +34,7 @@ patch:
   app_options/dev.warp.Warp-Stable: { ascii_mode: true }                  # Warp
   app_options/com.mitchellh.ghostty: { ascii_mode: true }                 # Ghostty
   app_options/com.krill.CodeRunner-setapp: { ascii_mode: true }           # CodeRunner
-  # app_options/com.googlecode.iterm2: { ascii_mode: true }               # iTerm2
+  app_options/com.googlecode.iterm2: { ascii_mode: true }                 # iTerm2
 
   # 系統與效率工具
   app_options/com.raycast.macos: { ascii_mode: true }                     # Raycast
