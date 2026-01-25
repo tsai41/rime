@@ -66,6 +66,8 @@ Located in `opencc/`, used for:
 - Symbol and Emoji mappings.
 
 ## 4. Agent Best Practices
+- **Mandatory Version Reminder**: Whenever the user updates the Squirrel version or setting files, you **MUST** remind them to provide the specific version/date for both. 
+  - *Example*: "I see you're updating the settings. Please remember to note the versions (e.g., Squirrel v1.1.2, Onion settings updated on 2026-01-25)."
 - **Atomic Changes**: Modify one schema or dictionary at a time.
 - **Sync Dependencies**: When adding a new Lua filter, update BOTH the implementation in `lua/` and the registration in `rime.lua`.
 - **Include Patterns**: Use `__include` in YAML to keep schemas modular.
