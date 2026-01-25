@@ -14,6 +14,12 @@
   - 修改 `translator/preedit_format` 項目的 `__include` 路徑：
     - **單行 (Back 樣式)**：`element_bopomo:/preedit_b_...`
     - **雙行 (Paragraph 樣式)**：`element_bopomo:/preedit_p_...`
+- **Shift 鍵中英切換**：
+  - 編輯 `default.custom.yaml`。
+  - 在 `ascii_composer/switch_key` 下設定 `Shift_L` 或 `Shift_R`：
+    - `inline_ascii`: 切換為英文，輸入內容留在預編輯區。
+    - `commit_text`: 提交當前候選字並切換為英文。
+    - `noop`: 停用該按鍵的單獨切換功能。
   - 修改後務必點擊 **「佈署」 (Deploy)** 生效。
 
 ## 🔗 相關連結
