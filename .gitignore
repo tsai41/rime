@@ -23,3 +23,7 @@ sync/
 *.tmp
 *.swp
 .DS_Store
+
+# 機器特定狀態檔（deploy 時自動生成/更新, 跨機同步會互蓋）
+user.yaml
+installation.yaml
