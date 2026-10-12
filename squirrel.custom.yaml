@@ -33,9 +33,9 @@ patch:
   # 終端機與開發工具
   app_options/com.googlecode.iterm2: { ascii_mode: true }                 # iTerm2
   app_options/com.mitchellh.ghostty: { ascii_mode: true }                 # Ghostty
-  app_options/com.krill.CodeRunner-setapp: { ascii_mode: true }           # CodeRunner
-  app_options/fun.tw93.kaku: { ascii_mode: true }                         # Kaku
-  app_options/com.cmuxterm.app: { ascii_mode: true }                      # cmux
+  # app_options/com.krill.CodeRunner-setapp: { ascii_mode: true }           # CodeRunner
+  # app_options/fun.tw93.kaku: { ascii_mode: true }                         # Kaku
+  # app_options/com.cmuxterm.app: { ascii_mode: true }                      # cmux
   app_options/com.termius-dmg.mac: { ascii_mode: true }                   # Termius
   # app_options/io.appmakes.otty: { ascii_mode: true }                      # Otty
 
